@@ -8,6 +8,7 @@ import com.nhnacademy.edu.jdbc.jdbcex1.repository.Students;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -24,7 +25,7 @@ public class RootPane extends BorderPane implements ViewMixin {
 
     private Label changedLabel;
 
-    private StudentModel model;
+    private final StudentModel model;
     private FormRenderer displayForm;
 
     private TableView<Student> studentTableView;
@@ -71,6 +72,11 @@ public class RootPane extends BorderPane implements ViewMixin {
 
         studentTableView.getColumns().addAll(seqCol, nameCol, scoreCol);
         studentTableView.setItems(Students.getInstance().getStudents());
+        studentTableView.setOnMouseClicked(event ->{
+            if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 1){
+                model.updateStudent(studentTableView.getSelectionModel().getSelectedItem());
+            }
+        });
     }
 
     @Override
@@ -95,6 +101,7 @@ public class RootPane extends BorderPane implements ViewMixin {
         scrollContent.setContent(displayForm);
         scrollContent.setFitToWidth(true);
         scrollContent.getStyleClass().add("scroll-pane");
+        scrollContent.getStyleClass().add("bordered");
 
         listScrollContent.setContent(studentTableView);
         listScrollContent.setFitToHeight(true);

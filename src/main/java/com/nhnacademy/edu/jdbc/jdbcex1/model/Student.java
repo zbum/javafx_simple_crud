@@ -58,8 +58,19 @@ public class Student implements Cloneable {
                     '}';
         }
 
-    public void update(String name, int score) {
-        this.name.setValue(name);
-        this.score.setValue(score);
+    public void update(Student student) {
+        if(student == null) {
+            clear();
+            return;
+        }
+        this.seq.setValue( student.getSeq());
+        this.name.setValue(student.getName());
+        this.score.setValue(student.getScore());
+    }
+
+    public void clear() {
+        this.seq.setValue(0);
+        this.name.set("");
+        this.score.setValue(0);
     }
 }

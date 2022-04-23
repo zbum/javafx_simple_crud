@@ -6,14 +6,13 @@ import com.dlsc.formsfx.model.structure.Group;
 import com.dlsc.formsfx.model.validators.IntegerRangeValidator;
 import com.dlsc.formsfx.model.validators.StringLengthValidator;
 import com.nhnacademy.edu.jdbc.jdbcex1.repository.Students;
-import javafx.event.EventType;
 
 import static com.dlsc.formsfx.model.event.FormEvent.EVENT_FORM_PERSISTED;
 
 public class StudentModel {
 
-    private Students students = Students.getInstance();
-    private Student student = new Student();
+    private final Students students = Students.getInstance();
+    private final Student student = new Student();
     private Form formInstance;
 
     public Form getFormInstance() {
@@ -48,11 +47,16 @@ public class StudentModel {
 
                     students.findBySeq(student.getSeq())
                             .ifPresentOrElse(
-                                    it -> it.update(student.getName(), student.getScore()),
+                                    it -> it.update(student),
                                     () -> students.addStudent(student.deepClone())
                             );
+                    student.clear();
                 });
     }
 
+    public void updateStudent(Student student) {
+        this.student.clear();
+        this.student.update(student);
+    }
 
 }
